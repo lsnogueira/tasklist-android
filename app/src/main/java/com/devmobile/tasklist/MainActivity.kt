@@ -7,6 +7,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+    lateinit var db: AppDatabase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -14,7 +16,11 @@ class MainActivity : AppCompatActivity() {
         val viewAdapter = TaskAdapter()
         val viewManager = LinearLayoutManager(this)
 
-        val db = getDatabase(this)
+        db = getDatabase(this)
+
+        viewAdapter.update = {
+            updateTask(it)
+        }
 
         recyclerView.apply {
             layoutManager = viewManager
@@ -32,5 +38,9 @@ class MainActivity : AppCompatActivity() {
             viewAdapter.updateItens(task)
         }
 
+    }
+
+    fun updateTask(task: Task){
+        db.taskDao().update(task)
     }
 }

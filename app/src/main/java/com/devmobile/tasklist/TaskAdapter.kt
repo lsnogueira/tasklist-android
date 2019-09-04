@@ -12,6 +12,8 @@ class TaskAdapter : RecyclerView.Adapter<TaskAdapter.ViewHolder>(){
 
     private val items = mutableListOf<Task>()
 
+    var update:(Task)->Unit = {}
+
     fun updateItens(task: Task){
         items.add(task)
         notifyDataSetChanged()
@@ -39,6 +41,8 @@ class TaskAdapter : RecyclerView.Adapter<TaskAdapter.ViewHolder>(){
         holder.checkBox.setOnClickListener {
             items[position].isDone = holder.checkBox.isChecked
             holder.textView.updateStrike(items[position].isDone)
+
+            update(items[position])
         }
 
     }
